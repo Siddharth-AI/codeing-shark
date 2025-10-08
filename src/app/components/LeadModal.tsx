@@ -83,7 +83,8 @@ const LeadModal: React.FC<LeadModalProps> = ({
     const leadData = {
       ...formData,
       customerMobile: `+91${formData.customerMobile}`,
-      label: courseTitle,
+      customerComment: ` Interested in ${courseTitle}. ${formData.customerComment}`,
+      label: "MERN",
     };
 
     const result = await dispatch(submitLead(leadData));
