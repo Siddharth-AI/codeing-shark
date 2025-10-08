@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import LeadModal from "@/components/LeadModal";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { getCourse } from "@/lib/coursesData";
@@ -48,6 +49,7 @@ export default function CourseDetailPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const videoRef = useRef<HTMLDivElement>(null);
 
   // Smooth animation trigger
@@ -275,7 +277,9 @@ export default function CourseDetailPage() {
 
                 {/* CTA Buttons */}
                 <div className="flex flex-wrap gap-4 pt-6">
-                  <button className="btn-course-enroll px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                  <button 
+                    onClick={() => setIsModalOpen(true)}
+                    className="btn-course-enroll px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
                     <Play className="w-5 h-5 inline mr-2" />
                     Book Free Demo Class
                   </button>
@@ -781,6 +785,12 @@ export default function CourseDetailPage() {
           </div>
         )}
       </div>
+
+      <LeadModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        courseTitle={course?.title || ''}
+      />
 
       <Footer />
     </>
