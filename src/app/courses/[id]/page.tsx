@@ -1,34 +1,24 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import {
   ArrowLeft,
   Star,
   Users,
-  Calendar,
   Clock,
   Award,
-  Globe,
   Play,
   BookOpen,
   CheckCircle,
   Download,
-  Smartphone,
   Monitor,
   FileText,
-  Share2,
-  Heart,
-  ShoppingCart,
   User,
   Trophy,
   Zap,
   Target,
-  TrendingUp,
   ChevronDown,
   ChevronUp,
-  Plus,
-  Check,
-  X,
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -40,60 +30,9 @@ import { getCourse } from "@/lib/coursesData";
 export default function CourseDetailPage() {
   const params = useParams();
   const courseId = params?.id as string;
-  const [showFAQ, setShowFAQ] = useState(false);
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
-  const [showFullDescription, setShowFullDescription] = useState(false);
-  const [activeVideoTab, setActiveVideoTab] = useState("preview");
-  const [isEnrolling, setIsEnrolling] = useState(false);
-  const [showPromoModal, setShowPromoModal] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const videoRef = useRef<HTMLDivElement>(null);
-
-  // Smooth animation trigger
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      setTimeout(() => {
-        setIsLoaded(true);
-      }, 10);
-    }, 50);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  const [timeLeft, setTimeLeft] = useState({
-    hours: 23,
-    minutes: 59,
-    seconds: 45,
-  });
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowPromoModal(true);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    const countdown = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-        } else if (prev.hours > 0) {
-          return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        }
-        return prev;
-      });
-    }, 1000);
-
-    return () => clearInterval(countdown);
-  }, []);
 
   if (!courseId) {
     return (
@@ -109,7 +48,7 @@ export default function CourseDetailPage() {
             </p>
             <Link
               href="/courses"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-all">
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-colors">
               <ArrowLeft className="w-4 h-4" />
               Back to Courses
             </Link>
@@ -136,7 +75,7 @@ export default function CourseDetailPage() {
             </p>
             <Link
               href="/courses"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-all">
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-colors">
               <ArrowLeft className="w-4 h-4" />
               Back to Courses
             </Link>
@@ -207,25 +146,13 @@ export default function CourseDetailPage() {
     <>
       <Header />
 
-      <div
-        className={`min-h-screen bg-gray-50 transition-opacity duration-700 ${
-          isLoaded ? "opacity-100" : "opacity-0"
-        }`}>
-        {/* Hero Section with Dark Navy Theme */}
+      <div className="min-h-screen bg-gray-50">
+        {/* Hero Section */}
         <div className="relative bg-gradient-to-br from-slate-900 to-blue-900 text-white overflow-hidden">
-          {/* Animated Background Elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-10 left-10 w-72 h-72 bg-orange-500/10 rounded-full blur-3xl animate-float"></div>
-            <div
-              className="absolute bottom-10 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-float"
-              style={{ animationDelay: "1s" }}></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-3xl animate-pulse"></div>
-          </div>
-
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left Content */}
-              <div className="space-y-6 animate-fade-in-up">
+              <div className="space-y-6">
                 {/* Level Badge */}
                 <div className="inline-block">
                   <span className="px-4 py-1.5 bg-green-500/20 text-green-300 rounded-full text-sm font-medium border border-green-500/30">
@@ -250,7 +177,6 @@ export default function CourseDetailPage() {
 
                 {/* Stats Row */}
                 <div className="flex flex-wrap items-center gap-6 pt-4">
-                  {/* Duration */}
                   <div className="flex items-center gap-2">
                     <Clock className="w-5 h-5 text-orange-400" />
                     <span className="text-sm font-medium">
@@ -258,7 +184,6 @@ export default function CourseDetailPage() {
                     </span>
                   </div>
 
-                  {/* Students */}
                   <div className="flex items-center gap-2">
                     <Users className="w-5 h-5 text-orange-400" />
                     <span className="text-sm font-medium">
@@ -266,7 +191,6 @@ export default function CourseDetailPage() {
                     </span>
                   </div>
 
-                  {/* Rating */}
                   <div className="flex items-center gap-2">
                     <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                     <span className="text-sm font-medium">
@@ -277,14 +201,14 @@ export default function CourseDetailPage() {
 
                 {/* CTA Buttons */}
                 <div className="flex flex-wrap gap-4 pt-6">
-                  <button 
+                  <button
                     onClick={() => setIsModalOpen(true)}
-                    className="btn-course-enroll px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                    className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-red-600 transition-colors shadow-lg">
                     <Play className="w-5 h-5 inline mr-2" />
                     Book Free Demo Class
                   </button>
 
-                  <button className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 transform hover:scale-105 transition-all duration-300 border border-white/20">
+                  <button className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/20">
                     <Play className="w-5 h-5 inline mr-2" />
                     Watch Preview
                   </button>
@@ -292,8 +216,8 @@ export default function CourseDetailPage() {
               </div>
 
               {/* Right Content - Price Card */}
-              <div className="lg:flex lg:justify-end animate-scale-in">
-                <div className="bg-white rounded-2xl shadow-2xl overflow-hidden max-w-md w-full transform hover:scale-105 transition-all duration-300">
+              <div className="lg:flex lg:justify-end">
+                <div className="bg-white rounded-2xl shadow-2xl overflow-hidden max-w-md w-full hover:shadow-3xl transition-shadow duration-300">
                   {/* Course Image */}
                   <div className="relative h-64 overflow-hidden">
                     <img
@@ -302,7 +226,7 @@ export default function CourseDetailPage() {
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute top-4 right-4">
-                      <span className="px-3 py-1 bg-red-500 text-white text-sm font-bold rounded-lg animate-badge-pulse">
+                      <span className="px-3 py-1 bg-red-500 text-white text-sm font-bold rounded-lg">
                         40% OFF
                       </span>
                     </div>
@@ -310,7 +234,6 @@ export default function CourseDetailPage() {
 
                   {/* Price Section */}
                   <div className="p-6 space-y-6">
-                    {/* Price */}
                     <div>
                       <div className="flex items-baseline gap-3">
                         <span className="text-5xl font-bold text-gray-900">
@@ -326,12 +249,10 @@ export default function CourseDetailPage() {
                       </p>
                     </div>
 
-                    {/* Enroll Button */}
-                    <button className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                    <button className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:from-orange-600 hover:to-red-600 transition-colors shadow-lg">
                       Enroll Now
                     </button>
 
-                    {/* Guarantee */}
                     <p className="text-center text-sm text-gray-600">
                       30-day money-back guarantee
                     </p>
@@ -369,7 +290,7 @@ export default function CourseDetailPage() {
             <div className="lg:col-span-2 space-y-12">
               {/* Overview Tab */}
               {activeTab === "overview" && (
-                <div className="space-y-12 animate-fade-in-up">
+                <div className="space-y-12">
                   {/* What You'll Learn */}
                   <section className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
@@ -425,7 +346,7 @@ export default function CourseDetailPage() {
 
               {/* Curriculum Tab */}
               {activeTab === "curriculum" && (
-                <div className="space-y-6 animate-fade-in-up">
+                <div className="space-y-6">
                   <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">
                       Course Curriculum
@@ -487,7 +408,7 @@ export default function CourseDetailPage() {
 
               {/* Projects Tab */}
               {activeTab === "projects" && (
-                <div className="space-y-6 animate-fade-in-up">
+                <div className="space-y-6">
                   <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                       <Target className="w-7 h-7 text-orange-500" />
@@ -527,7 +448,7 @@ export default function CourseDetailPage() {
 
               {/* Instructor Tab */}
               {activeTab === "instructor" && (
-                <div className="space-y-6 animate-fade-in-up">
+                <div className="space-y-6">
                   <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">
                       Your Instructor
@@ -638,7 +559,7 @@ export default function CourseDetailPage() {
               {testimonials.map((testimonial) => (
                 <div
                   key={testimonial.id}
-                  className="testimonial-card bg-gray-50 rounded-2xl p-8 border border-gray-100">
+                  className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
                   <div className="flex items-center gap-4 mb-4">
                     <img
                       src={testimonial.avatar}
@@ -697,9 +618,7 @@ export default function CourseDetailPage() {
                     )}
                   </button>
                   {openFAQ === faq.id && (
-                    <div className="px-6 pb-6 text-gray-700 animate-slideDown">
-                      {faq.answer}
-                    </div>
+                    <div className="px-6 pb-6 text-gray-700">{faq.answer}</div>
                   )}
                 </div>
               ))}
@@ -717,79 +636,17 @@ export default function CourseDetailPage() {
             <p className="text-white/90 text-lg mb-8">
               30-day money-back guarantee
             </p>
-            <button className="px-8 py-4 bg-white text-orange-500 font-bold rounded-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-xl">
+            <button className="px-8 py-4 bg-white text-orange-500 font-bold rounded-xl hover:bg-gray-100 transition-colors shadow-xl">
               Enroll Now - ${course.price.current}
             </button>
           </div>
         </div>
-
-        {/* Promo Modal */}
-        {showPromoModal && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-            <div className="bg-white rounded-2xl max-w-md w-full p-8 relative animate-scale-in">
-              <button
-                onClick={() => setShowPromoModal(false)}
-                className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors">
-                <X className="w-5 h-5 text-gray-500" />
-              </button>
-
-              <div className="text-center space-y-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto">
-                  <Zap className="w-8 h-8 text-white" />
-                </div>
-
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    Get 50% off this course
-                  </h3>
-                  <p className="text-gray-600">Offer expires in:</p>
-                </div>
-
-                {/* Real-time Countdown */}
-                <div className="flex justify-center gap-4">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-orange-500">
-                      {String(timeLeft.hours).padStart(2, "0")}
-                    </div>
-                    <div className="text-xs text-gray-500 uppercase">Hours</div>
-                  </div>
-                  <div className="text-3xl font-bold text-gray-300">:</div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-orange-500">
-                      {String(timeLeft.minutes).padStart(2, "0")}
-                    </div>
-                    <div className="text-xs text-gray-500 uppercase">
-                      Minutes
-                    </div>
-                  </div>
-                  <div className="text-3xl font-bold text-gray-300">:</div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-orange-500">
-                      {String(timeLeft.seconds).padStart(2, "0")}
-                    </div>
-                    <div className="text-xs text-gray-500 uppercase">
-                      Seconds
-                    </div>
-                  </div>
-                </div>
-
-                <button className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:from-orange-600 hover:to-red-600 transition-all shadow-lg">
-                  Claim Your Discount
-                </button>
-
-                <p className="text-sm text-gray-500">
-                  *Limited time offer. Don't miss out!
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
-      <LeadModal 
+      <LeadModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        courseTitle={course?.title || ''}
+        courseTitle={course?.title || ""}
       />
 
       <Footer />

@@ -1,33 +1,22 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
   Search,
-  Filter,
   BookOpen,
   Users,
   Star,
   Clock,
-  Award,
   ChevronLeft,
   ChevronRight,
   Grid,
   List,
-  SlidersHorizontal,
   ArrowRight,
-  Sparkles,
-  TrendingUp,
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import {
-  courses,
-  getCoursesByCategory,
-  searchCourses,
-  getFeaturedCourses,
-  getBestsellerCourses,
-} from "@/lib/coursesData";
+import { getCoursesByCategory, searchCourses } from "@/lib/coursesData";
 
 const categories = [
   { name: "All", icon: "🎯", color: "from-gray-500 to-gray-600" },
@@ -53,9 +42,6 @@ export default function CoursesPage() {
   const [sortBy, setSortBy] = useState("popular");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isVisible, setIsVisible] = useState(false);
-  const [visibleCourses, setVisibleCourses] = useState<Set<number>>(new Set());
-  const sectionRef = useRef<HTMLDivElement>(null);
   const coursesPerPage = 9;
 
   // Filter and sort courses
@@ -90,55 +76,12 @@ export default function CoursesPage() {
   };
 
   const filteredCourses = getFilteredCourses();
-  const featuredCourses = getFeaturedCourses();
-  const bestsellerCourses = getBestsellerCourses();
-
   const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
   const startIndex = (currentPage - 1) * coursesPerPage;
   const currentCourses = filteredCourses.slice(
     startIndex,
     startIndex + coursesPerPage
   );
-
-  // Intersection Observer for hero section
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Intersection Observer for course cards
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = parseInt(
-              entry.target.getAttribute("data-index") || "0"
-            );
-            setVisibleCourses((prev) => new Set([...prev, index]));
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const courseElements = document.querySelectorAll(".course-card");
-    courseElements.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, [currentCourses]);
 
   const getCategoryColor = (categoryName: string) => {
     const category = categories.find((cat) => cat.name === categoryName);
@@ -157,48 +100,22 @@ export default function CoursesPage() {
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50">
         <div className="relative pt-20">
           {/* Hero Section */}
-          <section
-            ref={sectionRef}
-            className="py-12 sm:py-16 relative overflow-hidden">
-            {/* Floating background elements - similar to blog page */}
-            <div className="absolute top-20 left-10 w-20 h-20 bg-orange-200/30 rounded-full blur-xl animate-float"></div>
-            <div
-              className="absolute bottom-20 right-10 w-32 h-32 bg-blue-200/30 rounded-full blur-xl animate-float"
-              style={{ animationDelay: "1s" }}></div>
-            <div
-              className="absolute top-1/2 left-1/3 w-24 h-24 bg-purple-200/20 rounded-full blur-xl animate-float"
-              style={{ animationDelay: "0.5s" }}></div>
-
+          <section className="py-12 sm:py-16 relative overflow-hidden">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-10">
-                <div
-                  className={`inline-flex items-center bg-gradient-to-r from-blue-100 to-purple-50 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold mb-6 transition-all duration-700 ${
-                    isVisible
-                      ? "translate-y-0 opacity-100"
-                      : "translate-y-5 opacity-0"
-                  }`}>
+                <div className="inline-flex items-center bg-gradient-to-r from-blue-100 to-purple-50 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
                   <BookOpen className="w-4 h-4 mr-2" />
                   Premium Online Courses
                 </div>
 
-                <h1
-                  className={`text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight transition-all duration-700 delay-200 ${
-                    isVisible
-                      ? "translate-y-0 opacity-100"
-                      : "translate-y-5 opacity-0"
-                  }`}>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
                   <span>Learn From </span>
-                  <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent animate-float-up">
+                  <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
                     Industry Experts
                   </span>
                 </h1>
 
-                <p
-                  className={`text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed transition-all duration-700 delay-300 blog-text-reveal ${
-                    isVisible
-                      ? "translate-y-0 opacity-100"
-                      : "translate-y-5 opacity-0"
-                  }`}>
+                <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                   Join thousands of students mastering new skills with our
                   comprehensive online courses.
                 </p>
@@ -207,13 +124,13 @@ export default function CoursesPage() {
           </section>
 
           {/* Search and Filters */}
-          <section className="py-6 relative fade-in-up">
+          <section className="py-6 relative">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               {/* Search Bar */}
-              <div className="max-w-2xl mx-auto mb-8 scale-in">
-                <div className="relative bg-white/80 backdrop-blur-lg rounded-xl shadow-lg border border-white/50 p-2 group transition-all duration-300 hover:shadow-xl hover:scale-105">
+              <div className="max-w-2xl mx-auto mb-8">
+                <div className="relative bg-white/80 backdrop-blur-lg rounded-xl shadow-lg border border-white/50 p-2 group transition-shadow duration-300 hover:shadow-xl">
                   <div className="flex items-center">
-                    <Search className="w-5 h-5 text-gray-400 ml-3 transition-all duration-300 group-hover:text-orange-500" />
+                    <Search className="w-5 h-5 text-gray-400 ml-3 transition-colors duration-300 group-hover:text-orange-500" />
                     <input
                       type="text"
                       placeholder="Search courses, instructors, or topics..."
@@ -232,19 +149,18 @@ export default function CoursesPage() {
               <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
                 {/* Categories */}
                 <div className="flex flex-wrap justify-center gap-2">
-                  {categories.map((category, index) => (
+                  {categories.map((category) => (
                     <button
                       key={category.name}
                       onClick={() => {
                         setSelectedCategory(category.name);
                         setCurrentPage(1);
                       }}
-                      className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-105 ${
+                      className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
                         selectedCategory === category.name
-                          ? `bg-gradient-to-r ${category.color} text-white shadow-lg animate-badge-pulse`
+                          ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
                           : "bg-white/80 text-gray-700 hover:bg-white hover:shadow-lg"
-                      }`}
-                      style={{ animationDelay: `${index * 0.1}s` }}>
+                      }`}>
                       <span className="flex items-center space-x-1">
                         <span>{category.icon}</span>
                         <span>{category.name}</span>
@@ -260,7 +176,7 @@ export default function CoursesPage() {
                     setSelectedLevel(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="px-4 py-2 rounded-xl bg-white/80 text-gray-700 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 hover:shadow-lg hover:scale-105">
+                  className="px-4 py-2 rounded-xl bg-white/80 text-gray-700 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow duration-300 hover:shadow-lg">
                   {levels.map((level) => (
                     <option key={level} value={level}>
                       {level}
@@ -272,7 +188,7 @@ export default function CoursesPage() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="px-4 py-2 rounded-xl bg-white/80 text-gray-700 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 hover:shadow-lg hover:scale-105">
+                  className="px-4 py-2 rounded-xl bg-white/80 text-gray-700 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow duration-300 hover:shadow-lg">
                   {sortOptions.map((option) => (
                     <option key={option.value} value={option.value}>
                       {option.label}
@@ -281,10 +197,10 @@ export default function CoursesPage() {
                 </select>
 
                 {/* View Mode */}
-                <div className="flex bg-white/80 rounded-xl p-1 border border-gray-200 transition-all duration-300 hover:shadow-lg">
+                <div className="flex bg-white/80 rounded-xl p-1 border border-gray-200 transition-shadow duration-300 hover:shadow-lg">
                   <button
                     onClick={() => setViewMode("grid")}
-                    className={`p-2 rounded-lg transition-all duration-300 ${
+                    className={`p-2 rounded-lg transition-colors duration-300 ${
                       viewMode === "grid"
                         ? "bg-blue-500 text-white"
                         : "text-gray-500 hover:bg-gray-100"
@@ -293,7 +209,7 @@ export default function CoursesPage() {
                   </button>
                   <button
                     onClick={() => setViewMode("list")}
-                    className={`p-2 rounded-lg transition-all duration-300 ${
+                    className={`p-2 rounded-lg transition-colors duration-300 ${
                       viewMode === "list"
                         ? "bg-blue-500 text-white"
                         : "text-gray-500 hover:bg-gray-100"
@@ -308,7 +224,7 @@ export default function CoursesPage() {
           {/* Courses Grid/List */}
           <section className="pb-6">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between mb-8 slide-in-left">
+              <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
                   {selectedCategory === "All"
                     ? "All Courses"
@@ -323,34 +239,26 @@ export default function CoursesPage() {
               {/* Grid View */}
               {viewMode === "grid" ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                  {currentCourses.map((course, index) => (
+                  {currentCourses.map((course) => (
                     <Link
                       key={course.id}
                       href={`/courses/${course.id}`}
                       className="group block">
-                      <article
-                        data-index={index}
-                        className={`course-card bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden h-full flex flex-col ${
-                          visibleCourses.has(index)
-                            ? "animate-course-enter opacity-100"
-                            : "opacity-0"
-                        }`}
-                        style={{ animationDelay: `${(index % 3) * 0.1}s` }}>
+                      <article className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden h-full flex flex-col">
                         <div className="relative h-48 overflow-hidden">
                           <img
                             src={course.image}
                             alt={course.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
 
-                          {/* Hover overlay - like blog page */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                           <div className="absolute top-4 left-4">
                             <div
                               className={`flex items-center bg-gradient-to-r ${getCategoryColor(
                                 course.category
-                              )} text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg animate-badge-pulse`}>
+                              )} text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg`}>
                               <span className="mr-1">
                                 {getCategoryIcon(course.category)}
                               </span>
@@ -360,14 +268,12 @@ export default function CoursesPage() {
 
                           <div className="absolute top-4 right-4 flex flex-col space-y-1">
                             {course.bestseller && (
-                              <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg animate-badge-pulse">
+                              <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg">
                                 🏆 Bestseller
                               </div>
                             )}
                             {course.newCourse && (
-                              <div
-                                className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg animate-badge-pulse"
-                                style={{ animationDelay: "0.2s" }}>
+                              <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg">
                                 ✨ New
                               </div>
                             )}
@@ -379,11 +285,11 @@ export default function CoursesPage() {
                             {course.title}
                           </h3>
 
-                          <div className="flex items-center mb-4 group-hover:translate-x-1 transition-transform duration-300">
+                          <div className="flex items-center mb-4">
                             <img
                               src={course.instructor.avatar}
                               alt={course.instructor.name}
-                              className="w-8 h-8 rounded-full mr-3 group-hover:scale-110 transition-transform duration-300"
+                              className="w-8 h-8 rounded-full mr-3"
                             />
                             <div>
                               <div className="text-sm font-medium text-gray-900">
@@ -394,13 +300,13 @@ export default function CoursesPage() {
 
                           <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center space-x-4">
-                              <div className="flex items-center text-yellow-500 group-hover:scale-110 transition-transform duration-300">
+                              <div className="flex items-center text-yellow-500">
                                 <Star className="w-4 h-4 fill-current mr-1" />
                                 <span className="text-sm font-semibold">
                                   {course.rating}
                                 </span>
                               </div>
-                              <div className="flex items-center text-gray-500 group-hover:scale-110 transition-transform duration-300">
+                              <div className="flex items-center text-gray-500">
                                 <Users className="w-4 h-4 mr-1" />
                                 <span className="text-sm">
                                   {course.studentsCount.toLocaleString()}
@@ -420,7 +326,7 @@ export default function CoursesPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex items-center text-blue-600 font-semibold group-hover:translate-x-2 transition-transform duration-300">
+                            <div className="flex items-center text-blue-600 font-semibold group-hover:translate-x-1 transition-transform duration-300">
                               <ArrowRight className="w-4 h-4" />
                             </div>
                           </div>
@@ -432,27 +338,19 @@ export default function CoursesPage() {
               ) : (
                 /* List View */
                 <div className="space-y-6 mb-12">
-                  {currentCourses.map((course, index) => (
+                  {currentCourses.map((course) => (
                     <Link
                       key={course.id}
                       href={`/courses/${course.id}`}
                       className="group block">
-                      <article
-                        data-index={index}
-                        className={`course-card bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-1 ${
-                          visibleCourses.has(index)
-                            ? "animate-course-enter opacity-100"
-                            : "opacity-0"
-                        }`}
-                        style={{ animationDelay: `${index * 0.1}s` }}>
+                      <article className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
                         <div className="flex flex-col md:flex-row">
                           <div className="relative w-full md:w-64 h-48 overflow-hidden">
                             <img
                               src={course.image}
                               alt={course.title}
-                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />
-                            {/* Hover overlay */}
                             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                           </div>
 
@@ -462,7 +360,7 @@ export default function CoursesPage() {
                                 <div
                                   className={`inline-flex items-center bg-gradient-to-r ${getCategoryColor(
                                     course.category
-                                  )} text-white px-3 py-1 rounded-full text-xs font-semibold mb-3 shadow-lg animate-badge-pulse`}>
+                                  )} text-white px-3 py-1 rounded-full text-xs font-semibold mb-3 shadow-lg`}>
                                   <span className="mr-1">
                                     {getCategoryIcon(course.category)}
                                   </span>
@@ -477,11 +375,11 @@ export default function CoursesPage() {
                                   {course.subtitle}
                                 </p>
 
-                                <div className="flex items-center mb-4 group-hover:translate-x-1 transition-transform duration-300">
+                                <div className="flex items-center mb-4">
                                   <img
                                     src={course.instructor.avatar}
                                     alt={course.instructor.name}
-                                    className="w-10 h-10 rounded-full mr-3 group-hover:scale-110 transition-transform duration-300"
+                                    className="w-10 h-10 rounded-full mr-3"
                                   />
                                   <div>
                                     <div className="text-sm font-medium text-gray-900">
@@ -494,19 +392,19 @@ export default function CoursesPage() {
                                 </div>
 
                                 <div className="flex items-center space-x-6">
-                                  <div className="flex items-center text-yellow-500 group-hover:scale-110 transition-transform duration-300">
+                                  <div className="flex items-center text-yellow-500">
                                     <Star className="w-4 h-4 fill-current mr-1" />
                                     <span className="text-sm font-medium">
                                       {course.rating}
                                     </span>
                                   </div>
-                                  <div className="flex items-center text-gray-500 group-hover:scale-110 transition-transform duration-300">
+                                  <div className="flex items-center text-gray-500">
                                     <Users className="w-4 h-4 mr-1" />
                                     <span className="text-sm">
                                       {course.studentsCount.toLocaleString()}
                                     </span>
                                   </div>
-                                  <div className="flex items-center text-gray-500 group-hover:scale-110 transition-transform duration-300">
+                                  <div className="flex items-center text-gray-500">
                                     <Clock className="w-4 h-4 mr-1" />
                                     <span className="text-sm">
                                       {course.duration}
@@ -525,7 +423,7 @@ export default function CoursesPage() {
                                   </div>
                                 )}
                                 {course.bestseller && (
-                                  <div className="mt-2 text-xs bg-gradient-to-r from-orange-500 to-red-500 text-white px-2 py-1 rounded-full font-bold inline-block animate-badge-pulse">
+                                  <div className="mt-2 text-xs bg-gradient-to-r from-orange-500 to-red-500 text-white px-2 py-1 rounded-full font-bold inline-block">
                                     🏆 Bestseller
                                   </div>
                                 )}
@@ -541,9 +439,9 @@ export default function CoursesPage() {
 
               {/* No Results */}
               {filteredCourses.length === 0 && (
-                <div className="text-center py-16 fade-in-up">
+                <div className="text-center py-16">
                   <div className="inline-block p-6 bg-white rounded-2xl shadow-lg">
-                    <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4 animate-float" />
+                    <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-xl font-bold text-gray-900 mb-3">
                       No courses found
                     </h3>
@@ -557,7 +455,7 @@ export default function CoursesPage() {
                         setSelectedLevel("All Levels");
                         setCurrentPage(1);
                       }}
-                      className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl btn-course-enroll">
+                      className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-xl font-semibold transition-colors duration-300 hover:from-blue-600 hover:to-purple-600">
                       Clear Filters
                     </button>
                   </div>
@@ -566,16 +464,16 @@ export default function CoursesPage() {
 
               {/* Pagination */}
               {filteredCourses.length > coursesPerPage && (
-                <div className="flex items-center justify-center space-x-2 fade-in-up">
+                <div className="flex items-center justify-center space-x-2">
                   <button
                     onClick={() =>
                       currentPage > 1 && setCurrentPage(currentPage - 1)
                     }
                     disabled={currentPage === 1}
-                    className={`flex items-center px-4 py-2 rounded-xl font-semibold transition-all duration-300 hover:scale-105 ${
+                    className={`flex items-center px-4 py-2 rounded-xl font-semibold transition-colors duration-300 ${
                       currentPage === 1
                         ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                        : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 shadow-lg hover:shadow-xl"
+                        : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 shadow-lg"
                     }`}>
                     <ChevronLeft className="w-4 h-4 mr-1" />
                     Previous
@@ -586,9 +484,9 @@ export default function CoursesPage() {
                       <button
                         key={i + 1}
                         onClick={() => setCurrentPage(i + 1)}
-                        className={`px-3 py-2 rounded-xl font-semibold transition-all duration-300 hover:scale-110 ${
+                        className={`px-3 py-2 rounded-xl font-semibold transition-colors duration-300 ${
                           currentPage === i + 1
-                            ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg animate-badge-pulse"
+                            ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg"
                             : "bg-white text-gray-700 hover:bg-blue-50 shadow-md"
                         }`}>
                         {i + 1}
@@ -602,10 +500,10 @@ export default function CoursesPage() {
                       setCurrentPage(currentPage + 1)
                     }
                     disabled={currentPage === totalPages}
-                    className={`flex items-center px-4 py-2 rounded-xl font-semibold transition-all duration-300 hover:scale-105 ${
+                    className={`flex items-center px-4 py-2 rounded-xl font-semibold transition-colors duration-300 ${
                       currentPage === totalPages
                         ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                        : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 shadow-lg hover:shadow-xl"
+                        : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 shadow-lg"
                     }`}>
                     Next
                     <ChevronRight className="w-4 h-4 ml-1" />

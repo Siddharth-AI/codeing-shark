@@ -1,15 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  X,
-  CheckCircle,
-  Sparkles,
-  Mail,
-  Phone,
-  User,
-  MessageSquare,
-} from "lucide-react";
+import { X, Sparkles, Mail, Phone, User, MessageSquare } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { submitLead, resetLead } from "@/store/leadSlice";
 import { RootState, AppDispatch } from "@/store";
@@ -137,56 +129,34 @@ const LeadModal: React.FC<LeadModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
-      {/* Backdrop with blur */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-md"
         onClick={onClose}
       />
 
-      {/* Animated Background Particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-20 w-64 h-64 bg-orange-500/20 rounded-full blur-3xl animate-float" />
-        <div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-float"
-          style={{ animationDelay: "1s" }}
-        />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
-      </div>
-
-      {/* Modal Container - More Compact */}
-      <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden animate-scale-in flex flex-col">
-        {/* Decorative Top Bar with Gradient */}
+      {/* Modal Container */}
+      <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col">
+        {/* Decorative Top Bar */}
         <div className="h-1.5 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500" />
 
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-all duration-300 hover:rotate-90 group">
-          <X className="w-5 h-5 group-hover:scale-110 transition-transform" />
+          className="absolute top-4 right-4 z-10 p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors duration-300">
+          <X className="w-5 h-5" />
         </button>
 
         {/* Scrollable Content */}
-        <div className="overflow-y-auto flex-1 custom-scrollbar">
+        <div className="overflow-y-auto flex-1">
           <div className="p-6">
             {success ? (
-              // Success Screen - Compact
+              // Success Screen
               <div className="text-center py-6 space-y-4">
-                {/* Animated Success Icon */}
+                {/* Success Icon */}
                 <div className="relative inline-block">
-                  {/* Expanding circles */}
-                  <div className="absolute inset-0 animate-ping">
-                    <div className="w-20 h-20 bg-green-500/30 rounded-full" />
-                  </div>
-                  <div
-                    className="absolute inset-0 animate-ping"
-                    style={{ animationDelay: "0.3s" }}>
-                    <div className="w-20 h-20 bg-green-500/20 rounded-full" />
-                  </div>
-
-                  {/* Main icon container */}
-                  <div className="relative w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-xl animate-success-bounce">
-                    {/* Checkmark */}
+                  <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-xl">
                     <svg
                       className="w-10 h-10 text-white"
                       fill="none"
@@ -197,76 +167,50 @@ const LeadModal: React.FC<LeadModalProps> = ({
                         strokeLinejoin="round"
                         strokeWidth={3}
                         d="M5 13l4 4L19 7"
-                        className="checkmark-path"
                       />
                     </svg>
                   </div>
 
                   {/* Sparkles */}
-                  <div className="absolute -top-1 -right-1 text-yellow-400 animate-sparkle">
+                  <div className="absolute -top-1 -right-1 text-yellow-400">
                     <Sparkles className="w-5 h-5" />
                   </div>
-                  <div
-                    className="absolute -bottom-1 -left-1 text-yellow-400 animate-sparkle"
-                    style={{ animationDelay: "0.3s" }}>
+                  <div className="absolute -bottom-1 -left-1 text-yellow-400">
                     <Sparkles className="w-4 h-4" />
                   </div>
                 </div>
 
-                {/* Success Message - Compact */}
+                {/* Success Message */}
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold text-gray-900 animate-slide-up">
+                  <h3 className="text-2xl font-bold text-gray-900">
                     Success! 🎉
                   </h3>
-                  <p
-                    className="text-base text-gray-600 animate-slide-up"
-                    style={{ animationDelay: "0.1s" }}>
+                  <p className="text-base text-gray-600">
                     Your demo class has been booked!
                   </p>
-                  <p
-                    className="text-sm text-gray-500 animate-slide-up"
-                    style={{ animationDelay: "0.2s" }}>
+                  <p className="text-sm text-gray-500">
                     We'll contact you shortly.
                   </p>
                 </div>
 
-                {/* Animated Progress Bar */}
-                <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full animate-progress-bar" />
-                </div>
-
-                {/* Course Info Badge - Compact */}
-                <div
-                  className="inline-block px-4 py-2 bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-full"
-                  style={{ animationDelay: "0.3s" }}>
+                {/* Course Info Badge */}
+                <div className="inline-block px-4 py-2 bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-full">
                   <p className="text-xs font-medium text-orange-700">
                     <span className="font-bold">{courseTitle}</span>
                   </p>
                 </div>
 
-                {/* Confetti - Smaller */}
+                {/* Emojis */}
                 <div className="flex justify-center gap-2 text-xl">
-                  <span
-                    className="animate-bounce"
-                    style={{ animationDelay: "0s" }}>
-                    🎊
-                  </span>
-                  <span
-                    className="animate-bounce"
-                    style={{ animationDelay: "0.1s" }}>
-                    ✨
-                  </span>
-                  <span
-                    className="animate-bounce"
-                    style={{ animationDelay: "0.2s" }}>
-                    🎉
-                  </span>
+                  <span>🎊</span>
+                  <span>✨</span>
+                  <span>🎉</span>
                 </div>
               </div>
             ) : (
-              // Form Screen - Compact
+              // Form Screen
               <>
-                {/* Header - Compact */}
+                {/* Header */}
                 <div className="text-center mb-5 space-y-2">
                   <h2 className="text-2xl font-bold text-gray-900">
                     Book Your Free Demo
@@ -279,7 +223,7 @@ const LeadModal: React.FC<LeadModalProps> = ({
                   </p>
                 </div>
 
-                {/* Form - Compact Spacing */}
+                {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Name Field */}
                   <div>
@@ -303,9 +247,9 @@ const LeadModal: React.FC<LeadModalProps> = ({
                         onFocus={() => setFocusedField("customerName")}
                         onBlur={() => setFocusedField(null)}
                         required
-                        className={`w-full pl-10 pr-3 py-2.5 border-2 rounded-lg focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 text-gray-900 text-sm transition-all duration-300 ${
+                        className={`w-full pl-10 pr-3 py-2.5 border-2 rounded-lg focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 text-gray-900 text-sm transition-colors ${
                           validationErrors.customerName
-                            ? "border-red-500 animate-shake"
+                            ? "border-red-500"
                             : focusedField === "customerName"
                             ? "border-orange-500"
                             : "border-gray-200 hover:border-gray-300"
@@ -342,9 +286,9 @@ const LeadModal: React.FC<LeadModalProps> = ({
                         onFocus={() => setFocusedField("customerEmail")}
                         onBlur={() => setFocusedField(null)}
                         required
-                        className={`w-full pl-10 pr-3 py-2.5 border-2 rounded-lg focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 text-gray-900 text-sm transition-all duration-300 ${
+                        className={`w-full pl-10 pr-3 py-2.5 border-2 rounded-lg focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 text-gray-900 text-sm transition-colors ${
                           validationErrors.customerEmail
-                            ? "border-red-500 animate-shake"
+                            ? "border-red-500"
                             : focusedField === "customerEmail"
                             ? "border-orange-500"
                             : "border-gray-200 hover:border-gray-300"
@@ -381,9 +325,9 @@ const LeadModal: React.FC<LeadModalProps> = ({
                         onFocus={() => setFocusedField("customerMobile")}
                         onBlur={() => setFocusedField(null)}
                         required
-                        className={`w-full pl-10 pr-3 py-2.5 border-2 rounded-lg focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 text-gray-900 text-sm transition-all duration-300 ${
+                        className={`w-full pl-10 pr-3 py-2.5 border-2 rounded-lg focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 text-gray-900 text-sm transition-colors ${
                           validationErrors.customerMobile
-                            ? "border-red-500 animate-shake"
+                            ? "border-red-500"
                             : focusedField === "customerMobile"
                             ? "border-orange-500"
                             : "border-gray-200 hover:border-gray-300"
@@ -419,7 +363,7 @@ const LeadModal: React.FC<LeadModalProps> = ({
                         onFocus={() => setFocusedField("customerComment")}
                         onBlur={() => setFocusedField(null)}
                         rows={2}
-                        className={`w-full pl-10 pr-3 py-2.5 border-2 rounded-lg focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 text-gray-900 text-sm transition-all duration-300 resize-none ${
+                        className={`w-full pl-10 pr-3 py-2.5 border-2 rounded-lg focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 text-gray-900 text-sm transition-colors resize-none ${
                           focusedField === "customerComment"
                             ? "border-orange-500"
                             : "border-gray-200 hover:border-gray-300"
@@ -441,11 +385,8 @@ const LeadModal: React.FC<LeadModalProps> = ({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full relative overflow-hidden group bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 px-6 rounded-lg font-bold hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]">
-                    {/* Button shimmer effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-
-                    <span className="relative flex items-center justify-center gap-2 text-sm">
+                    className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 px-6 rounded-lg font-bold hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg">
+                    <span className="flex items-center justify-center gap-2 text-sm">
                       {loading ? (
                         <>
                           <svg

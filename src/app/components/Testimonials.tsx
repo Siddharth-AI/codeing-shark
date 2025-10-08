@@ -1,24 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import {
-  Star,
-  Quote,
-  ArrowLeft,
-  ArrowRight,
-  Play,
-  CheckCircle,
-  Users,
-} from "lucide-react";
+import React from "react";
+import { Star, Quote, CheckCircle, Play } from "lucide-react";
 import Link from "next/link";
 
 const Testimonials = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [animatedCards, setAnimatedCards] = useState<Set<number>>(new Set());
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
   const testimonials = [
     {
       id: 1,
@@ -82,47 +68,6 @@ const Testimonials = () => {
     },
   ];
 
-  // Intersection Observer for scroll animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Card animation on scroll
-  useEffect(() => {
-    if (isVisible) {
-      testimonials.forEach((_, index) => {
-        setTimeout(() => {
-          setAnimatedCards((prev) => new Set(prev).add(index));
-        }, index * 200);
-      });
-    }
-  }, [isVisible]);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % Math.ceil(testimonials.length / 2));
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide(
-      (prev) =>
-        (prev - 1 + Math.ceil(testimonials.length / 2)) %
-        Math.ceil(testimonials.length / 2)
-    );
-  };
-
   const getCompanyColor = (company: string) => {
     switch (company) {
       case "Google":
@@ -140,137 +85,59 @@ const Testimonials = () => {
 
   return (
     <section
-      ref={sectionRef}
       id="testimonials"
       className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-orange-50 via-white to-orange-50 relative overflow-hidden">
-      {/* Background Animated Elements */}
+      {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 -right-32 w-72 h-72 bg-gradient-to-bl from-orange-200/20 to-red-200/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute bottom-1/4 -left-32 w-80 h-80 bg-gradient-to-tr from-blue-200/15 to-purple-200/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-yellow-100/10 to-orange-100/10 rounded-full blur-3xl animate-ping opacity-20"></div>
+        <div className="absolute top-1/4 -right-32 w-72 h-72 bg-gradient-to-bl from-orange-200/20 to-red-200/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 -left-32 w-80 h-80 bg-gradient-to-tr from-blue-200/15 to-purple-200/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-yellow-100/10 to-orange-100/10 rounded-full blur-3xl opacity-20"></div>
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-        {/* Header Section with Animation */}
-        <div
-          className={`text-center mb-12 sm:mb-16 lg:mb-20 transform transition-all duration-1000 ${
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-          }`}>
+        {/* Header Section */}
+        <div className="text-center mb-12 sm:mb-16 lg:mb-20">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            <span
-              className={` transform transition-all duration-700 delay-200 ${
-                isVisible
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-5 opacity-0"
-              }`}>
-              Success{" "}
-            </span>
-            <span
-              className={` bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent transform transition-all duration-700 delay-400 ${
-                isVisible
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-5 opacity-0"
-              }`}>
+            <span>Success </span>
+            <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
               Stories
             </span>
           </h2>
 
-          <p
-            className={`text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed transform transition-all duration-700 delay-600 ${
-              isVisible
-                ? "translate-y-0 opacity-100"
-                : "translate-y-5 opacity-0"
-            }`}>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
             See how CodingSharks students are making waves in tech
           </p>
-
-          {/* Stats Row */}
-          {/* <div
-            className={`flex flex-wrap justify-center gap-8 mt-12 transform transition-all duration-1000 delay-800 ${
-              isVisible
-                ? "translate-y-0 opacity-100"
-                : "translate-y-10 opacity-0"
-            }`}>
-            <div className="text-center group cursor-pointer">
-              <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
-                10k+
-              </div>
-              <div className="text-sm sm:text-base text-gray-600 group-hover:text-gray-800 transition-colors duration-300">
-                Successful Students
-              </div>
-            </div>
-            <div className="text-center group cursor-pointer">
-              <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
-                95%
-              </div>
-              <div className="text-sm sm:text-base text-gray-600 group-hover:text-gray-800 transition-colors duration-300">
-                Job Placement Rate
-              </div>
-            </div>
-            <div className="text-center group cursor-pointer">
-              <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
-                150%
-              </div>
-              <div className="text-sm sm:text-base text-gray-600 group-hover:text-gray-800 transition-colors duration-300">
-                Average Salary Increase
-              </div>
-            </div>
-          </div> */}
         </div>
 
-        {/* Enhanced Testimonials Grid */}
+        {/* Testimonials Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-12 sm:mb-16">
-          {testimonials.map((testimonial, index) => (
+          {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}
-              className={`group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-gray-100/50 hover:border-orange-200/50 overflow-hidden ${
-                animatedCards.has(index)
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-10 opacity-0"
-              }`}
-              style={{
-                transitionDelay: `${800 + index * 200}ms`,
-              }}
-              onMouseEnter={() => setHoveredCard(index)}
-              onMouseLeave={() => setHoveredCard(null)}>
+              className="group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100/50 hover:border-orange-200/50 overflow-hidden">
               {/* Background Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-50/30 to-blue-50/30 opacity-0 group-hover:opacity-100 transition-all duration-500 rounded-3xl"></div>
-
-              {/* Floating Background Elements */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-orange-200/20 to-red-200/20 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-700 animate-pulse"></div>
-              <div className="absolute -bottom-6 -left-6 w-14 h-14 bg-gradient-to-tl from-blue-200/20 to-purple-200/20 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-700 delay-200 animate-pulse"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-50/30 to-blue-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl"></div>
 
               <div className="relative z-10 p-6 sm:p-8">
-                {/* Quote Section with Enhanced Design */}
+                {/* Quote Section */}
                 <div className="flex items-start space-x-4 mb-8">
-                  <div className="relative">
-                    <Quote className="w-8 h-8 sm:w-10 sm:h-10 text-orange-500 flex-shrink-0 mt-1 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300" />
-                    {/* <div className="absolute inset-0 bg-orange-500 rounded-full opacity-20 scale-150 animate-ping opacity-0 group-hover:opacity-20"></div> */}
-                  </div>
+                  <Quote className="w-8 h-8 sm:w-10 sm:h-10 text-orange-500 flex-shrink-0 mt-1" />
                   <p className="text-gray-700 leading-relaxed text-base sm:text-lg group-hover:text-gray-800 transition-colors duration-300">
                     "{testimonial.content}"
                   </p>
                 </div>
 
-                {/* Enhanced User Info Section */}
+                {/* User Info Section */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <div className="relative">
                       <img
                         src={testimonial.image}
                         alt={testimonial.name}
-                        className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover ring-4 ring-white group-hover:ring-orange-200 transition-all duration-300 group-hover:scale-105"
+                        className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover ring-4 ring-white group-hover:ring-orange-200 transition-colors duration-300"
                       />
                       <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
                         <CheckCircle className="w-3 h-3 text-white" />
-                      </div>
-
-                      {/* Company Badge */}
-                      <div
-                        className={`absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r ${getCompanyColor(
-                          testimonial.company
-                        )} rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200 animate-bounce`}>
-                        <div className="w-full h-full rounded-full bg-white/20"></div>
                       </div>
                     </div>
 
@@ -282,13 +149,12 @@ const Testimonials = () => {
                         {testimonial.role}
                       </div>
 
-                      {/* Enhanced Rating */}
+                      {/* Rating */}
                       <div className="flex items-center space-x-1 mb-2">
                         {[...Array(testimonial.rating)].map((_, i) => (
                           <Star
                             key={i}
-                            className="w-4 h-4 text-yellow-500 fill-current group-hover:scale-110 transition-transform duration-300"
-                            style={{ animationDelay: `${i * 100}ms` }}
+                            className="w-4 h-4 text-yellow-500 fill-current"
                           />
                         ))}
                         <span className="ml-2 text-sm font-semibold text-gray-700">
@@ -304,7 +170,7 @@ const Testimonials = () => {
 
                   {/* Achievement Badge */}
                   <div className="hidden sm:block">
-                    <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-2xl px-4 py-2 group-hover:scale-105 transition-transform duration-300">
+                    <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-2xl px-4 py-2">
                       <div className="text-xs text-blue-800 font-semibold">
                         {testimonial.achievement}
                       </div>
@@ -325,15 +191,6 @@ const Testimonials = () => {
                     </div>
                   </div>
                 </div>
-
-                {/* Floating Particles on Hover */}
-                {hoveredCard === index && (
-                  <div className="absolute inset-0 opacity-100 transition-opacity duration-500 pointer-events-none">
-                    <div className="absolute top-8 right-12 w-2 h-2 bg-orange-400 rounded-full animate-bounce delay-100"></div>
-                    <div className="absolute top-16 right-8 w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce delay-300"></div>
-                    <div className="absolute top-12 right-20 w-1 h-1 bg-purple-400 rounded-full animate-bounce delay-500"></div>
-                  </div>
-                )}
               </div>
 
               {/* Hover Shine Effect */}
@@ -342,15 +199,12 @@ const Testimonials = () => {
           ))}
         </div>
 
-        {/* Enhanced CTA Section */}
-        <div
-          className={`text-center transform transition-all duration-1000 delay-1200 ${
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-          }`}>
+        {/* CTA Section */}
+        <div className="text-center">
           <div className="relative inline-block group">
             <Link
               href="/blog"
-              className="relative bg-white text-orange-500 border-2 border-orange-500 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl font-bold hover:bg-orange-500 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden">
+              className="relative bg-white text-orange-500 border-2 border-orange-500 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl font-bold hover:bg-orange-500 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden">
               <span className="relative z-10 flex items-center justify-center">
                 Read More Stories
                 <svg
@@ -370,10 +224,6 @@ const Testimonials = () => {
               {/* Button shine effect */}
               <div className="absolute inset-0 -left-full group-hover:left-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 transition-all duration-700 ease-out"></div>
             </Link>
-
-            {/* Floating elements around CTA */}
-            <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full opacity-60 animate-bounce delay-300"></div>
-            <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-blue-400 rounded-full opacity-60 animate-bounce delay-700"></div>
           </div>
 
           {/* Additional Info */}
@@ -383,7 +233,7 @@ const Testimonials = () => {
           </p>
 
           {/* Trust Indicators */}
-          <div className="flex flex-wrap justify-center gap-6 mt-8 duration-300">
+          <div className="flex flex-wrap justify-center gap-6 mt-8">
             <div className="flex items-center space-x-2 text-sm text-gray-500">
               <CheckCircle className="w-4 h-4 text-green-500" />
               <span>100% Real Reviews</span>

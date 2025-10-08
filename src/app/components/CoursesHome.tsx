@@ -1,87 +1,24 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import {
-  BookOpen,
-  Users,
-  Star,
-  Clock,
-  Award,
-  ArrowRight,
-  ChevronRight,
-  Sparkles,
-  TrendingUp,
-  Play,
-  CheckCircle,
-  Calendar,
-  Globe,
-} from "lucide-react";
+import React from "react";
+import { Users, Star, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { getPopularCourses } from "@/lib/coursesData";
 
 const CoursesHome = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [animatedCards, setAnimatedCards] = useState<Set<number>>(new Set());
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
   // Get popular courses for home section
   const courses = getPopularCourses(3);
 
-  // Intersection Observer for scroll animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Animate cards on scroll
-  useEffect(() => {
-    if (isVisible) {
-      courses.forEach((_, index) => {
-        setTimeout(() => {
-          setAnimatedCards((prev) => new Set(prev).add(index));
-        }, index * 200);
-      });
-    }
-  }, [isVisible, courses]);
-
   return (
     <section
-      ref={sectionRef}
       id="courses"
       className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-orange-50 via-white to-orange-50 relative overflow-hidden">
-      {/* Background Animated Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 -right-32 w-80 h-80 bg-gradient-to-bl from-blue-200/20 to-purple-200/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute bottom-1/4 -left-32 w-96 h-96 bg-gradient-to-tr from-cyan-200/15 to-indigo-200/10 rounded-full blur-3xl animate-pulse"></div>
-      </div>
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header Section */}
-        <div
-          className={`text-center mb-12 sm:mb-16 transform transition-all duration-1000 ${
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-          }`}>
+        <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
             <span className="">Master New </span>
-            <span
-              className={` bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent transform transition-all duration-700 delay-400 hover:scale-105 inline-block ${
-                isVisible
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-5 opacity-0"
-              }`}>
+            <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
               Skills Today
             </span>
           </h2>
@@ -92,62 +29,21 @@ const CoursesHome = () => {
           </p>
         </div>
 
-        {/* Stats Section */}
-        {/* <div
-          className={`flex flex-wrap justify-center gap-8 mb-12 transform transition-all duration-1000 delay-200 ${
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-          }`}>
-          <div className="text-center group cursor-pointer">
-            <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
-              50K+
-            </div>
-            <div className="text-sm sm:text-base text-gray-600">
-              Active Students
-            </div>
-          </div>
-          <div className="text-center group cursor-pointer">
-            <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
-              100+
-            </div>
-            <div className="text-sm sm:text-base text-gray-600">
-              Expert Instructors
-            </div>
-          </div>
-          <div className="text-center group cursor-pointer">
-            <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
-              4.8★
-            </div>
-            <div className="text-sm sm:text-base text-gray-600">
-              Average Rating
-            </div>
-          </div>
-        </div> */}
-
         {/* Course Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
           {courses.map((course, index) => (
             <Link
               key={course.id}
               href={`/courses/${course.id}`}
-              className={`group block transform transition-all duration-500 hover:-translate-y-3 ${
-                animatedCards.has(index)
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-10 opacity-0"
-              }`}
-              style={{
-                transitionDelay: `${800 + index * 200}ms`,
-              }}
-              onMouseEnter={() => setHoveredCard(index)}
-              onMouseLeave={() => setHoveredCard(null)}>
-              <article className="relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100/50 hover:border-blue-200/50 h-full flex flex-col">
+              className="group block">
+              <article className="relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden border border-gray-100/50 hover:border-blue-200/50 h-full flex flex-col">
                 {/* Course Image */}
                 <div className="relative h-48 sm:h-52 overflow-hidden flex-shrink-0">
                   <img
                     src={course.image}
                     alt={course.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                   {/* Category Badge */}
                   <div className="absolute top-4 left-4">
@@ -171,14 +67,6 @@ const CoursesHome = () => {
                       </div>
                     )}
                   </div>
-
-                  {/* Floating Particles */}
-                  {hoveredCard === index && (
-                    <div className="absolute inset-0 pointer-events-none">
-                      <div className="absolute top-8 right-12 w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-100"></div>
-                      <div className="absolute top-16 right-8 w-1.5 h-1.5 bg-purple-400 rounded-full animate-bounce delay-300"></div>
-                    </div>
-                  )}
                 </div>
 
                 {/* Course Content */}
@@ -261,7 +149,7 @@ const CoursesHome = () => {
                       )}
                     </div>
                     <div className="flex items-center text-blue-600 font-semibold">
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                      <ArrowRight className="w-4 h-4" />
                     </div>
                   </div>
                 </div>
@@ -270,29 +158,16 @@ const CoursesHome = () => {
           ))}
         </div>
 
-        {/* View All CTA
+        {/* CTA Section */}
         <div className="text-center">
-          <Link
-            href="/courses"
-            className="inline-flex items-center bg-gradient-to-r from-blue-500 to-purple-500 text-white px-8 py-4 rounded-2xl text-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-300 transform hover:scale-105 shadow-xl">
-            Explore All Courses
-            <ChevronRight className="w-5 h-5 ml-3" />
-          </Link>
-        </div> */}
-
-        {/* Enhanced CTA Section */}
-        <div
-          className={`text-center transform transition-all duration-1000 delay-1000 ${
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-          }`}>
-          <div className="relative inline-block group">
+          <div className="relative inline-block">
             <Link
               href="/courses"
-              className="relative bg-white text-orange-500 border-2 border-orange-500 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl font-bold hover:bg-orange-500 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden">
+              className="relative bg-white text-orange-500 border-2 border-orange-500 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl font-bold hover:bg-orange-500 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden">
               <span className="relative z-10 flex items-center justify-center">
                 Explore All Courses
                 <svg
-                  className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-300"
+                  className="w-5 h-5 ml-3"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor">
@@ -304,14 +179,7 @@ const CoursesHome = () => {
                   />
                 </svg>
               </span>
-
-              {/* Button shine effect */}
-              <div className="absolute inset-0 -left-full group-hover:left-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 transition-all duration-700 ease-out"></div>
             </Link>
-
-            {/* Floating Elements around CTA */}
-            <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-400 rounded-full opacity-60 animate-bounce delay-300 group-hover:animate-ping"></div>
-            <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-blue-400 rounded-full opacity-60 animate-bounce delay-700 group-hover:animate-ping"></div>
           </div>
         </div>
       </div>

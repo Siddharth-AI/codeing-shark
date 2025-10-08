@@ -1,14 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
   Search,
-  Calendar,
-  User,
-  Clock,
   BookOpen,
-  Filter,
-  Sparkles,
   ArrowRight,
   Eye,
   Heart,
@@ -19,7 +14,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import {
-  blogPosts,
   getBlogsByCategory,
   searchBlogs,
   getFeaturedBlogs,
@@ -39,7 +33,6 @@ export default function BlogPage() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [likedBlogs, setLikedBlogs] = useState<Set<number>>(new Set());
   const blogsPerPage = 6;
 
@@ -48,21 +41,12 @@ export default function BlogPage() {
     ? searchBlogs(search)
     : getBlogsByCategory(selectedCategory);
 
-  const featuredBlogs = getFeaturedBlogs();
   const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
   const startIndex = (currentPage - 1) * blogsPerPage;
   const currentBlogs = filteredBlogs.slice(
     startIndex,
     startIndex + blogsPerPage
   );
-
-  // Simple loading effect
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
 
   const getCategoryColor = (categoryName: string) => {
     const category = categories.find((cat) => cat.name === categoryName);
@@ -91,36 +75,24 @@ export default function BlogPage() {
       <Header />
 
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50">
-        <div
-          className={`relative pt-20 transition-all duration-700 ${
-            isLoaded ? "opacity-100" : "opacity-0"
-          }`}>
+        <div className="relative pt-20">
           {/* Hero Section */}
           <section className="py-12 sm:py-16 relative">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-10">
-                <div
-                  className={`inline-flex items-center bg-gradient-to-r from-blue-100 to-purple-50 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold mb-6 transform transition-all duration-500 ${
-                    isLoaded ? "translate-y-0" : "translate-y-4"
-                  }`}>
+                <div className="inline-flex items-center bg-gradient-to-r from-blue-100 to-purple-50 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
                   <BookOpen className="w-4 h-4 mr-2" />
                   Latest Insights & Tutorials
                 </div>
 
-                <h1
-                  className={`text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight transform transition-all duration-700 ${
-                    isLoaded ? "translate-y-0" : "translate-y-8"
-                  }`}>
-                  <span className="">Explore Creative </span>
-                  <span className=" bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                  <span>Explore Creative </span>
+                  <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
                     Blogs ✨
                   </span>
                 </h1>
 
-                <p
-                  className={`text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed transform transition-all duration-700 delay-100 ${
-                    isLoaded ? "translate-y-0" : "translate-y-6"
-                  }`}>
+                <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                   Discover the latest insights on design, development, and
                   innovation from bright minds around the world.
                 </p>
@@ -132,10 +104,7 @@ export default function BlogPage() {
           <section className="relative">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               {/* Search Bar */}
-              <div
-                className={`max-w-2xl mx-auto mb-8 transform transition-all duration-500 delay-200 ${
-                  isLoaded ? "translate-y-0" : "translate-y-4"
-                }`}>
+              <div className="max-w-2xl mx-auto mb-8">
                 <div className="relative bg-white/80 backdrop-blur-lg rounded-xl shadow-lg border border-white/50 p-2 hover:shadow-xl transition-shadow duration-300">
                   <div className="flex items-center">
                     <Search className="w-5 h-5 text-gray-400 ml-3" />
@@ -154,25 +123,19 @@ export default function BlogPage() {
               </div>
 
               {/* Category Filter */}
-              <div
-                className={`flex flex-wrap justify-center gap-2 sm:gap-3 mb-12 transform transition-all duration-500 delay-300 ${
-                  isLoaded ? "translate-y-0" : "translate-y-4"
-                }`}>
-                {categories.map((category, index) => (
+              <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12">
+                {categories.map((category) => (
                   <button
                     key={category.name}
                     onClick={() => {
                       setSelectedCategory(category.name);
                       setCurrentPage(1);
                     }}
-                    className={`px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-105 ${
+                    className={`px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
                       selectedCategory === category.name
                         ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
                         : "bg-white/80 text-gray-700 hover:bg-white hover:shadow-lg"
-                    }`}
-                    style={{
-                      transitionDelay: `${300 + index * 50}ms`,
-                    }}>
+                    }`}>
                     <span className="flex items-center space-x-1">
                       <span>{category.icon}</span>
                       <span>{category.name}</span>
@@ -186,10 +149,7 @@ export default function BlogPage() {
           {/* Blog Grid */}
           <section className="pb-8">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <div
-                className={`flex items-center justify-between mb-8 transform transition-all duration-500 delay-400 ${
-                  isLoaded ? "translate-y-0" : "translate-y-4"
-                }`}>
+              <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
                   {selectedCategory === "All"
                     ? "All Articles"
@@ -202,24 +162,17 @@ export default function BlogPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                {currentBlogs.map((blog, index) => (
+                {currentBlogs.map((blog) => (
                   <Link
                     key={blog.id}
                     href={`/blog/${blog.id}`}
-                    className={`group block transform transition-all duration-500 hover:-translate-y-2 ${
-                      isLoaded
-                        ? "translate-y-0 opacity-100"
-                        : "translate-y-8 opacity-0"
-                    }`}
-                    style={{
-                      transitionDelay: `${500 + index * 100}ms`,
-                    }}>
+                    className="group block transition-all duration-300 hover:-translate-y-2">
                     <article className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden h-full flex flex-col">
                       <div className="relative h-40 sm:h-48 overflow-hidden">
                         <img
                           src={blog.image}
                           alt={blog.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
 
                         <div className="absolute top-3 left-3">
@@ -240,10 +193,10 @@ export default function BlogPage() {
                               e.preventDefault();
                               toggleLike(blog.id);
                             }}
-                            className={`p-2 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-110 ${
+                            className={`p-2 rounded-full backdrop-blur-sm transition-colors duration-300 ${
                               likedBlogs.has(blog.id)
                                 ? "bg-red-500 text-white"
-                                : "bg-white/80 text-gray-600"
+                                : "bg-white/80 text-gray-600 hover:bg-white"
                             }`}>
                             <Heart className="w-3 h-3" />
                           </button>
@@ -295,19 +248,16 @@ export default function BlogPage() {
 
               {/* Pagination */}
               {filteredBlogs.length > blogsPerPage && (
-                <div
-                  className={`flex items-center justify-center space-x-2 transform transition-all duration-500 delay-700 ${
-                    isLoaded ? "translate-y-0" : "translate-y-4"
-                  }`}>
+                <div className="flex items-center justify-center space-x-2">
                   <button
                     onClick={() =>
                       currentPage > 1 && setCurrentPage(currentPage - 1)
                     }
                     disabled={currentPage === 1}
-                    className={`flex items-center px-4 py-2 rounded-xl font-semibold transition-all duration-300 hover:scale-105 ${
+                    className={`flex items-center px-4 py-2 rounded-xl font-semibold transition-colors duration-300 ${
                       currentPage === 1
                         ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                        : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 shadow-lg hover:shadow-xl"
+                        : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 shadow-lg"
                     }`}>
                     <ChevronLeft className="w-4 h-4 mr-1" />
                     Previous
@@ -318,10 +268,10 @@ export default function BlogPage() {
                       <button
                         key={i + 1}
                         onClick={() => setCurrentPage(i + 1)}
-                        className={`px-3 py-2 rounded-xl font-semibold transition-all duration-300 hover:scale-105 ${
+                        className={`px-3 py-2 rounded-xl font-semibold transition-colors duration-300 ${
                           currentPage === i + 1
                             ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white"
-                            : "bg-white text-gray-700 hover:bg-blue-50 hover:shadow-lg"
+                            : "bg-white text-gray-700 hover:bg-blue-50"
                         }`}>
                         {i + 1}
                       </button>
@@ -334,10 +284,10 @@ export default function BlogPage() {
                       setCurrentPage(currentPage + 1)
                     }
                     disabled={currentPage === totalPages}
-                    className={`flex items-center px-4 py-2 rounded-xl font-semibold transition-all duration-300 hover:scale-105 ${
+                    className={`flex items-center px-4 py-2 rounded-xl font-semibold transition-colors duration-300 ${
                       currentPage === totalPages
                         ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                        : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 shadow-lg hover:shadow-xl"
+                        : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 shadow-lg"
                     }`}>
                     Next
                     <ChevronRight className="w-4 h-4 ml-1" />
@@ -361,7 +311,7 @@ export default function BlogPage() {
                       setSelectedCategory("All");
                       setCurrentPage(1);
                     }}
-                    className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-all duration-300">
+                    className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-colors duration-300">
                     Clear Filters
                   </button>
                 </div>
