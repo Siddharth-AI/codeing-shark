@@ -82,7 +82,8 @@ const LeadModal: React.FC<LeadModalProps> = ({
 
     const leadData = {
       ...formData,
-      label: "MERN",
+      customerMobile: `+91${formData.customerMobile}`,
+      label: courseTitle,
     };
 
     const result = await dispatch(submitLead(leadData));
@@ -386,7 +387,7 @@ const LeadModal: React.FC<LeadModalProps> = ({
                             ? "border-orange-500"
                             : "border-gray-200 hover:border-gray-300"
                         }`}
-                        placeholder="9116213110"
+                        placeholder="+9116213110"
                       />
                     </div>
                     {validationErrors.customerMobile && (
