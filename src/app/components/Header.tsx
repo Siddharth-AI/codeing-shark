@@ -4,8 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import Image from "next/image";
-
+import logo from "@/assets/images/Coding.png";
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -70,13 +69,7 @@ const Header: React.FC = () => {
           {/* Logo with hover animation */}
           <Link href="/" className="flex items-center space-x-2 group">
             <div className=" flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
-              <Image
-                src="/images/coding.png"
-                alt="Coding Sharks"
-                className="h-12 w-auto"
-                width={500}
-                height={500}
-              />
+              <img src={logo.src} alt="Coding Sharks" className="h-12 w-auto" />
             </div>
           </Link>
 
