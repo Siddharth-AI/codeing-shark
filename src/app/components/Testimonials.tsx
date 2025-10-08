@@ -204,7 +204,7 @@ const Testimonials = () => {
           <div className="relative inline-block group">
             <Link
               href="/blog"
-              className="relative bg-white text-orange-500 border-2 border-orange-500 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl font-bold hover:bg-orange-500 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden">
+              className="relative bg-white text-orange-500 border-2 border-orange-500 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl font-bold hover:bg-orange-500 hover:text-orange-900 transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden">
               <span className="relative z-10 flex items-center justify-center">
                 Read More Stories
                 <svg
