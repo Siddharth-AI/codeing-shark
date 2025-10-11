@@ -20,6 +20,7 @@ import {
   Target,
   ChevronDown,
   ChevronUp,
+  Lock, // NEW ICON
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -27,7 +28,9 @@ import LeadModal from "@/components/LeadModal";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { getCourse } from "@/lib/coursesData";
-import { motion, useInView, AnimatePresence, easeIn } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import LeadInlineCard from "@/components/LeadInlinePanel";
+import { courseTestimonialImages } from "@/lib/Images";
 
 export default function CourseDetailPage() {
   const params = useParams();
@@ -36,6 +39,9 @@ export default function CourseDetailPage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // State for managing which curriculum sections are open
+  const [openSections, setOpenSections] = useState<number[]>([1]); // First section open by default
 
   const heroRef = useRef(null);
   const contentRef = useRef(null);
@@ -49,6 +55,15 @@ export default function CourseDetailPage() {
     amount: 0.2,
   });
   const isFaqInView = useInView(faqRef, { once: true, amount: 0.2 });
+
+  // Toggle section open/close
+  const toggleSection = (sectionId: number) => {
+    setOpenSections((prev) =>
+      prev.includes(sectionId)
+        ? prev.filter((id) => id !== sectionId)
+        : [...prev, sectionId]
+    );
+  };
 
   if (!courseId) {
     return (
@@ -111,23 +126,21 @@ export default function CourseDetailPage() {
   const testimonials = [
     {
       id: 1,
-      name: "Sarah Johnson",
+      name: "Atharva Mehta",
       role: "Software Engineer at Google",
       comment:
         "This course transformed my career! The projects were incredibly practical and the instructor's teaching style made complex topics easy to understand.",
       rating: 5,
-      avatar:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b48c?w=100",
+      avatar: courseTestimonialImages.testimonial1.src,
     },
     {
       id: 2,
-      name: "Michael Chen",
+      name: "Mukund Gupta",
       role: "Full-Stack Developer",
       comment:
         "Best investment I've made in my education. The curriculum is up-to-date and the community support is outstanding.",
       rating: 5,
-      avatar:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
+      avatar: courseTestimonialImages.testimonial2.src,
     },
   ];
 
@@ -220,13 +233,6 @@ export default function CourseDetailPage() {
                       Back
                     </motion.button>
                   </motion.div>
-
-                  {/* Level Badge */}
-                  <motion.div variants={fadeInUp} className="inline-block">
-                    <span className="px-4 py-1.5 bg-green-500/20 text-green-300 rounded-full text-sm font-medium border border-green-500/30">
-                      {course.level} Level
-                    </span>
-                  </motion.div>
                 </div>
 
                 <motion.h1
@@ -275,14 +281,14 @@ export default function CourseDetailPage() {
                 <motion.div
                   variants={fadeInUp}
                   className="flex flex-wrap gap-4 pt-6">
-                  <motion.button
+                  {/* <motion.button
                     onClick={() => setIsModalOpen(true)}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-red-600 transition-colors shadow-lg">
                     <Play className="w-5 h-5 inline mr-2" />
                     Book Free Demo Class
-                  </motion.button>
+                  </motion.button> */}
 
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -295,55 +301,13 @@ export default function CourseDetailPage() {
               </div>
 
               {/* Right Content - Price Card */}
-              <motion.div
-                variants={fadeInUp}
-                className="lg:flex lg:justify-end">
-                <motion.div
-                  whileHover={{ y: -5 }}
-                  transition={{ duration: 0.3 }}
-                  className="bg-white rounded-2xl shadow-2xl overflow-hidden max-w-md w-full">
-                  <div className="relative h-64 overflow-hidden">
-                    <img
-                      src={course.image}
-                      alt={course.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute top-4 right-4">
-                      <span className="px-3 py-1 bg-red-500 text-white text-sm font-bold rounded-lg">
-                        40% OFF
-                      </span>
-                    </div>
-                  </div>
 
-                  <div className="p-6 space-y-6">
-                    <div>
-                      <div className="flex items-baseline gap-3">
-                        <span className="text-5xl font-bold text-gray-900">
-                          ${course.price.current}
-                        </span>
-                        <span className="text-2xl text-gray-400 line-through">
-                          ${course.price.original}
-                        </span>
-                      </div>
-                      <p className="text-sm text-red-500 font-medium mt-2 flex items-center gap-2">
-                        <Zap className="w-4 h-4" />
-                        Limited Time Offer
-                      </p>
-                    </div>
-
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:from-orange-600 hover:to-red-600 transition-colors shadow-lg">
-                      Enroll Now
-                    </motion.button>
-
-                    <p className="text-center text-sm text-gray-600">
-                      30-day money-back guarantee
-                    </p>
-                  </div>
-                </motion.div>
-              </motion.div>
+              <LeadInlineCard
+                courseTitle={
+                  course?.title ??
+                  "Complete Data Science, AI, ML & Deep Learning"
+                }
+              />
             </div>
           </div>
         </motion.div>
@@ -461,7 +425,7 @@ export default function CourseDetailPage() {
                   </motion.div>
                 )}
 
-                {/* Curriculum Tab */}
+                {/* Curriculum Tab - CORRECT: Show 3 COLLAPSED Sections */}
                 {activeTab === "curriculum" && (
                   <motion.div
                     key="curriculum"
@@ -479,57 +443,137 @@ export default function CourseDetailPage() {
                         {course.curriculum.totalDuration}
                       </p>
 
-                      <div className="space-y-4">
-                        {course.curriculum.sections.map((section, index) => (
-                          <motion.div
-                            key={section.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            className="border border-gray-200 rounded-xl overflow-hidden">
-                            <div className="bg-gray-50 p-4 font-semibold text-gray-900 flex items-center justify-between">
-                              <span>
-                                Section {index + 1}: {section.title}
-                              </span>
-                              <span className="text-sm text-gray-600 font-normal">
-                                {section.lessons.length} lessons
-                              </span>
-                            </div>
-                            <div className="divide-y divide-gray-100">
-                              {section.lessons.map((lesson) => (
-                                <motion.div
-                                  key={lesson.id}
+                      {/* Container with Blur Effect */}
+                      <div className="relative min-h-[400px]">
+                        {/* First 3 Sections - WITH WORKING DROPDOWN - Blurred */}
+                        <div className="space-y-4">
+                          {course.curriculum.sections
+                            .slice(0, 3)
+                            .map((section, index) => (
+                              <motion.div
+                                key={section.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                className={`border border-gray-200 rounded-xl overflow-hidden ${
+                                  section.id === 3
+                                    ? "blur-[2px] opacity-70 pointer-events-none"
+                                    : ""
+                                }`}>
+                                {/* Section Header - CLICKABLE */}
+                                <motion.button
+                                  onClick={() => toggleSection(section.id)}
                                   whileHover={{
                                     backgroundColor: "rgba(249, 250, 251, 1)",
                                   }}
-                                  className="p-4 flex items-center justify-between transition-colors">
-                                  <div className="flex items-center gap-3">
-                                    {lesson.type === "video" && (
-                                      <Play className="w-4 h-4 text-gray-400" />
-                                    )}
-                                    {lesson.type === "quiz" && (
-                                      <FileText className="w-4 h-4 text-gray-400" />
-                                    )}
-                                    {lesson.type === "assignment" && (
-                                      <BookOpen className="w-4 h-4 text-gray-400" />
-                                    )}
-                                    <span className="text-gray-700">
-                                      {lesson.title}
-                                    </span>
-                                    {lesson.preview && (
-                                      <span className="text-xs text-orange-500 font-medium">
-                                        Preview
-                                      </span>
-                                    )}
-                                  </div>
-                                  <span className="text-sm text-gray-500">
-                                    {lesson.duration}
+                                  className="w-full bg-gray-50 p-4 font-semibold text-gray-900 flex items-center justify-between transition-colors cursor-pointer">
+                                  <span className="text-left">
+                                    Section {index + 1}: {section.title}
                                   </span>
-                                </motion.div>
-                              ))}
+                                  <div className="flex items-center gap-3">
+                                    <span className="text-sm text-gray-600 font-normal">
+                                      {section.lessons.length} lessons
+                                    </span>
+                                    <motion.div
+                                      animate={{
+                                        rotate: openSections.includes(
+                                          section.id
+                                        )
+                                          ? 180
+                                          : 0,
+                                      }}
+                                      transition={{ duration: 0.3 }}>
+                                      <ChevronDown className="w-5 h-5 text-gray-500" />
+                                    </motion.div>
+                                  </div>
+                                </motion.button>
+
+                                {/* Section Content - EXPANDABLE */}
+                                <AnimatePresence>
+                                  {openSections.includes(section.id) && (
+                                    <motion.div
+                                      initial={{ height: 0, opacity: 0 }}
+                                      animate={{ height: "auto", opacity: 1 }}
+                                      exit={{ height: 0, opacity: 0 }}
+                                      transition={{
+                                        duration: 0.3,
+                                        ease: "easeInOut",
+                                      }}
+                                      className="overflow-hidden">
+                                      <div className="divide-y divide-gray-100">
+                                        {section.lessons.map((lesson) => (
+                                          <motion.div
+                                            key={lesson.id}
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            whileHover={{
+                                              backgroundColor:
+                                                "rgba(249, 250, 251, 1)",
+                                            }}
+                                            className="p-4 flex items-center justify-between transition-colors">
+                                            <div className="flex items-center gap-3">
+                                              {lesson.type === "video" && (
+                                                <Play className="w-4 h-4 text-gray-400" />
+                                              )}
+                                              {lesson.type === "quiz" && (
+                                                <FileText className="w-4 h-4 text-gray-400" />
+                                              )}
+                                              {lesson.type === "assignment" && (
+                                                <BookOpen className="w-4 h-4 text-gray-400" />
+                                              )}
+                                              <span className="text-gray-700">
+                                                {lesson.title}
+                                              </span>
+                                              {lesson.preview && (
+                                                <span className="text-xs text-orange-500 font-medium">
+                                                  Preview
+                                                </span>
+                                              )}
+                                            </div>
+                                            <span className="text-sm text-gray-500">
+                                              {lesson.duration}
+                                            </span>
+                                          </motion.div>
+                                        ))}
+                                      </div>
+                                    </motion.div>
+                                  )}
+                                </AnimatePresence>
+                              </motion.div>
+                            ))}
+                        </div>
+
+                        {/* Center Overlay with Download CTA */}
+                        <div className="mt-3 flex items-center justify-center pointer-events-none">
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.3 }}
+                            className="text-center space-y-4 z-10 px-8 py-10 border max-w-lg pointer-events-auto">
+                            <div className="inline-flex items-center justify-center w-20 h-20 bg-orange-100 rounded-full mb-2">
+                              <Lock className="w-10 h-10 text-orange-500" />
                             </div>
+                            <h3 className="text-2xl font-bold text-gray-900">
+                              Want to see the full curriculum?
+                            </h3>
+                            <p className="text-gray-600 leading-relaxed">
+                              Download our detailed course brochure to explore
+                              all {course.curriculum.totalLessons} lessons
+                            </p>
+                            <motion.button
+                              onClick={() => setIsModalOpen(true)}
+                              whileHover={{ scale: 1.05, y: -2 }}
+                              whileTap={{ scale: 0.95 }}
+                              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:from-orange-600 hover:to-red-600 transition-all shadow-lg">
+                              <Download className="w-5 h-5" />
+                              Download Course Brochure
+                            </motion.button>
+                            <p className="text-sm text-gray-500">
+                              No credit card required • Free download
+                            </p>
                           </motion.div>
-                        ))}
+                        </div>
                       </div>
                     </div>
                   </motion.div>
