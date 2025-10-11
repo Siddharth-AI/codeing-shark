@@ -130,7 +130,7 @@ export default function BlogPostPage() {
       <article className="min-h-screen bg-white">
         <div className="relative pt-20">
           {/* Top Bar with Back Button */}
-          <div className="sticky top-20 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+          <div className="sticky top-[56px] md:top-20 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-100">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
               <div className="flex items-center justify-between">
                 <motion.button
