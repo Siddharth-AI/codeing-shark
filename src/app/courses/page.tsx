@@ -29,7 +29,6 @@ const categories = [
   { name: "Design", icon: "🎨", color: "from-pink-500 to-rose-500" },
 ];
 
-const levels = ["All Levels", "Beginner", "Intermediate", "Advanced"];
 const sortOptions = [
   { value: "popular", label: "Most Popular" },
   { value: "newest", label: "Newest" },
@@ -134,7 +133,6 @@ const CustomDropdown = ({
 export default function CoursesPage() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedLevel, setSelectedLevel] = useState("All Levels");
   const [sortBy, setSortBy] = useState("popular");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [currentPage, setCurrentPage] = useState(1);
@@ -147,13 +145,9 @@ export default function CoursesPage() {
 
   // Filter and sort courses
   const getFilteredCourses = () => {
-    let filtered = search
+    const filtered = search
       ? searchCourses(search)
       : getCoursesByCategory(selectedCategory);
-
-    if (selectedLevel !== "All Levels") {
-      filtered = filtered.filter((course) => course.level === selectedLevel);
-    }
 
     // Sort courses
     return filtered.sort((a, b) => {
@@ -332,7 +326,7 @@ export default function CoursesPage() {
                 </div>
 
                 {/* Custom Dropdowns */}
-                <motion.div
+                {/* <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1, duration: 0.3 }}>
@@ -344,7 +338,7 @@ export default function CoursesPage() {
                       setCurrentPage(1);
                     }}
                   />
-                </motion.div>
+                </motion.div> */}
 
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -666,7 +660,7 @@ export default function CoursesPage() {
                       onClick={() => {
                         setSearch("");
                         setSelectedCategory("All");
-                        setSelectedLevel("All Levels");
+
                         setCurrentPage(1);
                       }}
                       whileHover={{ scale: 1.05 }}

@@ -259,7 +259,7 @@ const CoursesHome = () => {
                       </div>
 
                       {/* Level Badge */}
-                      <div className="mb-4">
+                      {/* <div className="mb-4">
                         <motion.span
                           className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
                             course.level === "Beginner"
@@ -271,7 +271,7 @@ const CoursesHome = () => {
                           whileHover={{ scale: 1.05 }}>
                           {course.level}
                         </motion.span>
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* Price and CTA */}

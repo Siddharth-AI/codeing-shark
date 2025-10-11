@@ -5,6 +5,8 @@ import React, { useRef, useState } from "react";
 import { Star, Quote, CheckCircle, Play } from "lucide-react";
 import Link from "next/link";
 import { easeIn, easeOut, motion, useInView } from "framer-motion";
+import Image from "next/image";
+import { homeTestimonialImages } from "@/lib/Images";
 
 const Testimonials = () => {
   const sectionRef = useRef(null);
@@ -72,13 +74,12 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: "Jennifer Adams",
-      role: "Software Engineer at Google",
-      company: "Google",
-      image:
-        "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150",
+      name: "Siddharth Shah",
+      role: "Software Engineer at Appoliums",
+      company: "Appoliums",
+      image: homeTestimonialImages.testimonial1.src,
       content:
-        "CodingSharks transformed my career completely. The instructors are world-class and the curriculum is exactly what the industry needs. I landed my dream job at Google within 6 months!",
+        "CodingSharks transformed my career completely. The instructors are world-class and the curriculum is exactly what the industry needs. I landed my dream job at Appoliums within 6 months!",
       rating: 5,
       course: "Full Stack Development",
       achievement: "Career Switch Success",
@@ -87,11 +88,10 @@ const Testimonials = () => {
     },
     {
       id: 2,
-      name: "Marcus Thompson",
+      name: "Anupriya Pawar",
       role: "Data Scientist at Netflix",
       company: "Netflix",
-      image:
-        "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150",
+      image: homeTestimonialImages.testimonial2.src,
       content:
         "The machine learning course was incredibly comprehensive. The hands-on projects gave me the confidence to tackle real-world problems. Now I'm building recommendation systems at Netflix!",
       rating: 5,
@@ -102,11 +102,10 @@ const Testimonials = () => {
     },
     {
       id: 3,
-      name: "Sarah Chen",
+      name: "Krishna Yadav",
       role: "Mobile Developer at Uber",
       company: "Uber",
-      image:
-        "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=150",
+      image: homeTestimonialImages.testimonial3.src,
       content:
         "As a complete beginner, I was nervous about learning to code. The supportive community and excellent instruction made all the difference. I now develop apps used by millions!",
       rating: 5,
@@ -117,11 +116,10 @@ const Testimonials = () => {
     },
     {
       id: 4,
-      name: "Alex Rodriguez",
+      name: "Ananya Sharma",
       role: "Frontend Developer at Microsoft",
       company: "Microsoft",
-      image:
-        "https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=150",
+      image: homeTestimonialImages.testimonial4.src,
       content:
         "The React masterclass was exactly what I needed to level up my skills. The projects were challenging but rewarding, and the instructor's feedback was invaluable.",
       rating: 5,
