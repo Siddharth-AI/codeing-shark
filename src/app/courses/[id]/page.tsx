@@ -39,6 +39,7 @@ export default function CourseDetailPage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dynamicClick, setDynamicClick] = useState(false);
 
   // State for managing which curriculum sections are open
   const [openSections, setOpenSections] = useState<number[]>([1]); // First section open by default
@@ -562,7 +563,10 @@ export default function CourseDetailPage() {
                               all {course.curriculum.totalLessons} lessons
                             </p>
                             <motion.button
-                              onClick={() => setIsModalOpen(true)}
+                              onClick={() => {
+                                setDynamicClick(false);
+                                setIsModalOpen(true);
+                              }}
                               whileHover={{ scale: 1.05, y: -2 }}
                               whileTap={{ scale: 0.95 }}
                               className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:from-orange-600 hover:to-red-600 transition-all shadow-lg">
@@ -899,6 +903,10 @@ export default function CourseDetailPage() {
                 boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
               }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                setDynamicClick(true);
+                setIsModalOpen(true);
+              }}
               className="px-8 py-4 bg-white text-orange-500 font-bold rounded-xl hover:bg-gray-100 transition-colors shadow-xl">
               Enroll Now - ${course.price.current}
             </motion.button>
@@ -910,6 +918,7 @@ export default function CourseDetailPage() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         courseTitle={course?.title || ""}
+        dynamicClick={dynamicClick}
       />
 
       <Footer />

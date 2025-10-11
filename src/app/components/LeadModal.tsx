@@ -6,17 +6,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { submitLead, resetLead } from "@/store/leadSlice";
 import { RootState, AppDispatch } from "@/store";
 import { motion, AnimatePresence } from "framer-motion";
+import dynamic from "next/dynamic";
 
 interface LeadModalProps {
   isOpen: boolean;
   onClose: () => void;
   courseTitle: string;
+  dynamicClick: boolean;
 }
 
 const LeadModal: React.FC<LeadModalProps> = ({
   isOpen,
   onClose,
   courseTitle,
+  dynamicClick,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, success, error } = useSelector(
@@ -444,7 +447,9 @@ const LeadModal: React.FC<LeadModalProps> = ({
                         transition={{ delay: 0.1 }}
                         className="text-center mb-8">
                         <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                          Fill form to view brochure
+                          {dynamicClick
+                            ? "Book Free Demo Class"
+                            : "Fill form to view brochure"}
                         </h2>
                         <p className="text-gray-600">
                           Start learning{" "}
@@ -634,7 +639,9 @@ const LeadModal: React.FC<LeadModalProps> = ({
                           ) : (
                             <>
                               <Sparkles className="inline-block w-5 h-5 mr-2" />
-                              View Brochure
+                              {dynamicClick
+                                ? "Book Free Demo Class"
+                                : "View Brochure"}
                             </>
                           )}
                         </motion.button>

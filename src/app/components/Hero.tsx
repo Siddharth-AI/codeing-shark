@@ -141,7 +141,7 @@ const Hero = () => {
             <motion.div
               variants={badgeVariants}
               whileHover={{ scale: 1.05 }}
-              className="inline-flex items-center bg-gradient-to-r from-orange-100 to-red-50 text-orange-800 px-4 py-2 rounded-full text-sm font-medium mb-6 border border-orange-200/50 shadow-sm cursor-pointer">
+              className="mt-4 md:mt-0 inline-flex items-center bg-gradient-to-r from-orange-100 to-red-50 text-orange-800 px-4 py-2 rounded-full text-sm font-medium mb-6 border border-orange-200/50 shadow-sm cursor-pointer">
               <motion.span
                 animate={{ rotate: [0, 10, -10, 0] }}
                 transition={{ duration: 2, repeat: Infinity }}
