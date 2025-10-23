@@ -13,6 +13,7 @@ import {
   CheckCircle,
   Download,
   Monitor,
+  EditIcon,
   FileText,
   User,
   Trophy,
@@ -148,15 +149,15 @@ export default function CourseDetailPage() {
   const faqs = [
     {
       id: 1,
-      question: "How long do I have access to the course?",
+      question: "What kind of support will I receive during the coaching?",
       answer:
-        "You have lifetime access to the course content, including all future updates and additions.",
+        "You'll get direct access to your instructor for personalized guidance, code reviews, project assignments, and career mentorship throughout your learning journey. Get your doubts cleared and receive guidance whenever you need it",
     },
     {
       id: 2,
-      question: "What if I'm not satisfied with the course?",
+      question: "How does the coaching program work?",
       answer:
-        "We offer a 30-day money-back guarantee. If you're not satisfied, contact us for a full refund.",
+        "Learn at your own pace with structured modules, hands-on projects, and practical assignments. Build real-world applications while receiving feedback and guidance from experienced instructors.",
     },
     {
       id: 3,
@@ -222,9 +223,9 @@ export default function CourseDetailPage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left Content */}
               <div className="space-y-6">
-                <div className="flex items-center gap-4">
+                {/* Back Button */}
+                {/* <div className="flex items-center gap-4">
                   <motion.div variants={fadeInUp} className="inline-block">
-                    {/* Back Button */}
                     <motion.button
                       onClick={() => router.back()}
                       whileHover={{ x: -5 }}
@@ -234,7 +235,7 @@ export default function CourseDetailPage() {
                       Back
                     </motion.button>
                   </motion.div>
-                </div>
+                </div> */}
 
                 <motion.h1
                   variants={fadeInUp}
@@ -291,13 +292,13 @@ export default function CourseDetailPage() {
                     Book Free Demo Class
                   </motion.button> */}
 
-                  <motion.button
+                  {/* <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/20">
                     <Play className="w-5 h-5 inline mr-2" />
                     Watch Preview
-                  </motion.button>
+                  </motion.button> */}
                 </motion.div>
               </div>
 
@@ -703,12 +704,21 @@ export default function CourseDetailPage() {
                   </h3>
                   <ul className="space-y-3">
                     {[
-                      { icon: Clock, text: `${course.duration} of content` },
-                      { icon: Download, text: "Downloadable resources" },
-                      { icon: Monitor, text: "Access on mobile and TV" },
+                      // { icon: Clock, text: `${course.duration} of content` },
+                      { icon: Monitor, text: "One-on-one mentorship" },
+                      {
+                        icon: Download,
+                        text: "Real-world project assignments",
+                      },
+                      {
+                        icon: EditIcon,
+                        text: "Personalized code reviews & feedback",
+                      },
                       { icon: Award, text: "Certificate of completion" },
-                      { icon: User, text: "Direct instructor support" },
-                      { icon: Trophy, text: "Lifetime access" },
+                      // { icon: User, text: "Direct instructor support" },
+
+                      { icon: User, text: "Career guidance & interview prep" },
+                      { icon: Trophy, text: "Lifetime community access" },
                     ].map((item, index) => (
                       <motion.li
                         key={index}
@@ -899,7 +909,6 @@ export default function CourseDetailPage() {
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
               whileHover={{
-                scale: 1.05,
                 boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
               }}
               whileTap={{ scale: 0.95 }}
@@ -907,8 +916,9 @@ export default function CourseDetailPage() {
                 setDynamicClick(true);
                 setIsModalOpen(true);
               }}
-              className="px-8 py-4 bg-white text-orange-500 font-bold rounded-xl hover:bg-gray-100 transition-colors shadow-xl">
-              Enroll Now - ${course.price.current}
+              className="px-8 py-4 bg-white text-orange-500 font-bold rounded-xl hover:bg-gray-100 transition-colors shadow-xl cursor-pointer">
+              {/* Enroll Now - ${course.price.current} */}
+              Enroll Now
             </motion.button>
           </div>
         </motion.div>

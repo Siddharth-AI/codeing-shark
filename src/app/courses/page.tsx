@@ -498,14 +498,14 @@ export default function CoursesPage() {
 
                             <div className="flex items-center justify-between mt-auto">
                               <div className="flex items-center space-x-2">
-                                <span className="text-xl font-bold text-gray-900 group-hover:text-orange-500 transition-colors duration-300">
-                                  ${course.price.current}
+                                <span className="text-lg font-bold text-gray-900 group-hover:text-orange-500 transition-colors duration-300">
+                                  {/* ${course.price.current} */} Enroll Now
                                 </span>
-                                {course.price.original && (
+                                {/* {course.price.original && (
                                   <span className="text-sm text-gray-500 line-through">
                                     ${course.price.original}
                                   </span>
-                                )}
+                                )} */}
                               </div>
                               <motion.div
                                 className="flex items-center text-blue-600 font-semibold"

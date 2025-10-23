@@ -20,7 +20,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { getBlogPost } from "@/lib/blogData";
-import { easeIn, motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function BlogPostPage() {
   const params = useParams();

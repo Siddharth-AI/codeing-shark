@@ -277,12 +277,11 @@ const CoursesHome = () => {
                     {/* Price and CTA */}
                     <div className="flex items-center justify-between mt-auto">
                       <div className="flex items-center space-x-2">
-                        <motion.span
-                          className="text-2xl font-bold text-gray-900"
-                          whileHover={{ scale: 1.05 }}>
-                          ${course.price.current}
+                        <motion.span className="text-xl font-bold text-gray-900">
+                          {/* ${course.price.current} */}
+                          Enroll Now
                         </motion.span>
-                        {course.price.original && (
+                        {/* {course.price.original && (
                           <>
                             <span className="text-lg text-gray-500 line-through">
                               ${course.price.original}
@@ -293,7 +292,7 @@ const CoursesHome = () => {
                               {course.price.discount}% OFF
                             </motion.span>
                           </>
-                        )}
+                        )} */}
                       </div>
                       <motion.div
                         className="flex items-center justify-center w-10 h-10 rounded-full bg-orange-100 text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition-colors"

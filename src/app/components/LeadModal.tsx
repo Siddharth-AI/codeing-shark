@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { submitLead, resetLead } from "@/store/leadSlice";
 import { RootState, AppDispatch } from "@/store";
 import { motion, AnimatePresence } from "framer-motion";
-import dynamic from "next/dynamic";
 
 interface LeadModalProps {
   isOpen: boolean;
