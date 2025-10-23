@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "./components/ReduxProvider";
-
+import icon from "@/assets/images/icon.jpg";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -16,6 +16,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "CodingSharks - Master Programming",
   description: "Learn coding with expert instructors and real-world projects",
+  icons: {
+    icon: icon.src, // or '/icon.png'
+    shortcut: icon.src,
+    apple: icon.src,
+  },
 };
 
 export default function RootLayout({
